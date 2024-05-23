@@ -1,0 +1,122 @@
+Ala	AGC
+19	GGC
+ 	CGC
+10	TGC
+11	40
+Gly	ACC
+1	GCC
+14	CCC
+7	TCC
+7	29
+Pro	AGG
+7	GGG
+ 	CGG
+3	TGG
+8	18
+Thr	AGT
+9	GGT
+ 	CGT
+5	TGT
+4	18
+Val	AAC
+8	GAC
+1	CAC
+11	TAC
+3	23
+Ser	AGA
+9	GGA
+1	CGA
+3	TGA
+3	ACT
+ 	GCT
+8	 
+ 	 
+ 	24
+Arg	ACG
+6	GCG
+ 	CCG
+3	TCG
+5	 
+ 	 
+ 	CCT
+5	TCT
+5	24
+Leu	AAG
+8	GAG
+ 	CAG
+10	TAG
+3	 
+ 	 
+ 	CAA
+4	TAA
+5	30
+Phe	AAA
+ 	GAA
+7	 
+ 	 
+ 	7
+Asn	ATT
+ 	GTT
+14	 
+ 	 
+ 	14
+Lys	 
+ 	 
+ 	CTT
+19	TTT
+11	30
+Asp	ATC
+ 	GTC
+16	 
+ 	 
+ 	16
+Glu	 
+ 	 
+ 	CTC
+13	TTC
+8	21
+His	ATG
+1	GTG
+10	 
+ 	 
+ 	11
+Gln	 
+ 	 
+ 	CTG
+10	TTG
+6	16
+Ile	AAT
+11	GAT
+1	 
+ 	TAT
+5	17
+Met	 
+ 	 
+ 	CAT
+19	 
+ 	19
+Tyr	ATA
+ 	GTA
+10	 
+ 	 
+ 	10
+Supres	 
+ 	 
+ 	CTA
+ 	TTA
+1	1
+Cys	ACA
+ 	GCA
+57	 
+ 	 
+ 	57
+Trp	 
+ 	 
+ 	CCA
+8	 
+ 	8
+SelCys	 
+ 	 
+ 	 
+ 	TCA
+2	2
