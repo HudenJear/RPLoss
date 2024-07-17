@@ -13,7 +13,8 @@ Still under development...
 
 ## Getting Started
 ### Installation
-No comment...
+
+No comment...For now, you can use it directly in your model loss by import it from this dictionary
 
 ### Usgae
 
@@ -21,3 +22,6 @@ No comment...
 from RPLoss import ...
 import RPLoss as ...
 ```
+
+The CAILoss and tAILoss need a specified speceis when initializing, the other two need not.
+The loss weight of RPLoss shall be very high, and we recommand the ratio of 10000:1:1:0.1 when using the RP/CAI/tAI/MFE Loss due to their function and value scale.

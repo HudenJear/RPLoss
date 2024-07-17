@@ -36,7 +36,7 @@ protein_dict={
 def cai_vector_prefetch(length,cai_dict):
     
     if length==64:
-        mat=torch.zeros((65,21))
+        mat=torch.zeros((65,22))
         nc_dict=get_nc_dict(length)
         key_list=list(protein_dict.keys())
         for indx in range(len(key_list)):
@@ -44,7 +44,7 @@ def cai_vector_prefetch(length,cai_dict):
             for codon in codon_list:
                 mat[nc_dict[codon],indx]=cai_dict[codon]
     elif length==125:
-        mat=torch.zeros((126,21))
+        mat=torch.zeros((126,22))
         nc_dict=get_nc_dict(length)
         key_list=list(protein_dict.keys())
         for indx in range(len(key_list)):
@@ -83,18 +83,16 @@ class CAILoss(nn.Module):
         reduction (str): Specifies the reduction to apply to the output.
             Supported choices are 'none' | 'mean' | 'sum'. Default: 'mean'.
         codon_length: The codon coding sequnce length, if the 126 was chosen, the 'N' codon will be considered. Support '65', '126'. Default: 65.
-        specy: Support ecoli, yeast, human, rat, mouse, dog.
+        specie: Support 'ecoli','yeast','insect','c.elegans','Drosophila','human','mouse','rat','pig','pichia','arabidopsis','streptomyces','zeamays','tabacco'.
 
     Usgae:
         RNA_vec_pred (tensor): Shall be (B,L,65/126). The 65(64+1) logits will be sequences without ambiguoius codon N.
         RNA_vec_gt (tensor): Shall be (B,L,65/126).
-        weight(float): Loss weight. Default: 1.0.
-        reduction (str): Specifies the reduction to apply to the output.
-            Supported choices are 'none' | 'mean' | 'sum'. Default: 'mean'.
+        
 
     """
 
-    def __init__(self, criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',specy='ecoli'):
+    def __init__(self, criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',species='ecoli'):
         super(CAILoss, self).__init__()
         if criterion == 'l1':
             self.loss_op = L1Loss(loss_weight, reduction)
@@ -107,8 +105,8 @@ class CAILoss(nn.Module):
 
         self.loss_weight = loss_weight
 
-        if specy in ['ecoli','yeast','insect','c.elegans','Drosophila','human','mouse''rat','pig','pichia','arabidopsis','streptomyces','zeamays','tabacco']:
-          self.cai_dict=get_cai_dict(CAI_dict[specy])
+        if species in ['ecoli','yeast','insect','c.elegans','Drosophila','human','mouse','rat','pig','pichia','arabidopsis','streptomyces','zeamays','tabacco']:
+          self.cai_dict=get_cai_dict(CAI_dict[species])
 
 
         if codon_length=='65':
@@ -125,6 +123,9 @@ class CAILoss(nn.Module):
         if torch.cuda.is_available():
             self.code_mat=self.code_mat.cuda()
             self.val_mat=self.val_mat.cuda()
+
+        self.code_mat=nn.Parameter(self.code_mat,requires_grad=False)
+        self.val_mat=nn.Parameter(self.val_mat,requires_grad=False)
 
 
         # self.matrix64_expand=1
@@ -158,7 +159,7 @@ if __name__=='__main__':
     
     import random
 
-    loss= CAILoss(criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',specy='ecoli')
+    loss= CAILoss(criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',species='ecoli')
     for ind9 in range(10):
       input=torch.rand((4,8,512,65))
       tgt=torch.zeros((4,8,512,65))

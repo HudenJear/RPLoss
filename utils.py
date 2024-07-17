@@ -167,7 +167,7 @@ def matrix_prefetch(length=64,mode='precise'):
         raise ValueError(f'Unsupported mode: {mode}. Supported ones are: precise/extend')
     
     if length==64:
-        mat=torch.zeros((65,21))
+        mat=torch.zeros((65,22))
         nc_dict=get_nc_dict(length)
         key_list=list(protein_dict.keys())
         for indx in range(len(key_list)):
@@ -176,7 +176,7 @@ def matrix_prefetch(length=64,mode='precise'):
             for codon in codon_list:
                 mat[nc_dict[codon],indx]=1
     elif length==125:
-        mat=torch.zeros((126,21))
+        mat=torch.zeros((126,22))
         nc_dict=get_nc_dict(length)
         key_list=list(protein_dict.keys())
         for indx in range(len(key_list)):

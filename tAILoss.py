@@ -113,7 +113,7 @@ class tAILoss(nn.Module):
         reduction (str): Specifies the reduction to apply to the output.
             Supported choices are 'none' | 'mean' | 'sum'. Default: 'mean'.
         codon_length: The codon coding sequnce length, if the 126 was chosen, the 'N' codon will be considered. Support '65', '126'. Default: 65.
-        specy: Support ecoli, yeast, human, rat, mouse, dog.
+        species: Support ecoli, yeast, human, rat, mouse, dog.
         constrain: tAI compuation constarin. Support 'optimized' and 'standard'.
 
     Usgae:
@@ -124,7 +124,7 @@ class tAILoss(nn.Module):
             Supported choices are 'none' | 'mean' | 'sum'. Default: 'mean'.
     """
 
-    def __init__(self, criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',specy='mouse',constrain='optimized'):
+    def __init__(self, criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',species='mouse',constrain='optimized'):
         super(tAILoss, self).__init__()
         if criterion == 'l1':
             self.loss_op = L1Loss(loss_weight, reduction)
@@ -137,20 +137,23 @@ class tAILoss(nn.Module):
 
         self.loss_weight = loss_weight
 
-        if specy not in ['ecoli','yeast','human','mouse','rat']:
-           raise ValueError(f'Unsupported species: {specy}.')
+        if species not in ['ecoli','yeast','human','mouse','rat']:
+           raise ValueError(f'Unsupported species: {species}.')
 
         # the vector is accually the log of w in the original work, and has 2 different reduction methods but set to be more proper one for Loss computation of single codon
         if codon_length=='65':
-            self.val_mat=tAI_vector_prefetch(length=64,ss_list=sstrain[constrain],trna_count_dict=tRNA_gene_count[specy])
+            self.val_mat=tAI_vector_prefetch(length=64,ss_list=sstrain[constrain],trna_count_dict=tRNA_gene_count[species])
         elif codon_length=='126':
-            self.val_mat=tAI_vector_prefetch(length=125,ss_list=sstrain[constrain],trna_count_dict=tRNA_gene_count[specy])
+            self.val_mat=tAI_vector_prefetch(length=125,ss_list=sstrain[constrain],trna_count_dict=tRNA_gene_count[species])
         else:
             raise ValueError(f'Unsupported length mode: {codon_length}. Supported ones are: 65/126. The extend mode is not allowed in this Loss function.')
         
+
         if torch.cuda.is_available():
             # self.code_mat=self.code_mat.cuda()
             self.val_mat=self.val_mat.cuda()
+
+        self.val_mat=nn.Parameter(self.val_mat,requires_grad=False)
         # print(torch.cuda.is_available())
 
 
@@ -180,7 +183,7 @@ if __name__=='__main__':
     
     import random
 
-    loss= tAILoss(criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',specy='ecoli')
+    loss= tAILoss(criterion='l1', loss_weight=1.0, reduction='mean',codon_length='65',species='ecoli')
     for ind9 in range(10):
       input=torch.rand((4,8,512,65))
       tgt=torch.zeros((4,8,512,65))
@@ -200,7 +203,7 @@ if __name__=='__main__':
       o_loss=loss(input,tgt)
       print(o_loss)
 
-    # loss= tAILoss(criterion='l1', loss_weight=1.0, reduction='mean',codon_length='126',specy='mouse')
+    # loss= tAILoss(criterion='l1', loss_weight=1.0, reduction='mean',codon_length='126',species='mouse')
     # for ind9 in range(10):
     #   input=torch.rand((4,512,126))
     #   tgt=torch.zeros((4,512,126))

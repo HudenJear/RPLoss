@@ -49,10 +49,12 @@ class RNAProteinLoss(nn.Module):
             self.val_mat=matrix_prefetch(length=125,mode='extend').transpose_(dim0=0,dim1=1)
         # self.matrix64=matrix_prefetch(length=64)
         # self.matrix125=matrix_prefetch(length=125)
+        
         if torch.cuda.is_available():
             self.code_mat=self.code_mat.cuda()
             self.val_mat=self.val_mat.cuda()
-
+        self.code_mat=nn.Parameter(self.code_mat,requires_grad=False)
+        self.val_mat=nn.Parameter(self.val_mat,requires_grad=False)
 
         # self.matrix64_expand=1
         # self.matrix125_expand=matrix_prefetch(length=125,mode='extend')
