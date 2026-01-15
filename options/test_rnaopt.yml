@@ -1,0 +1,54 @@
+# Test configuration file for RNA optimization
+# Usage: python RNA_opt/test.py -opt options/test_rnaopt.yml
+name: Test-RNAopt
+model_type: RNAoptModel
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+fp16: False
+
+# dataset and data loader settings
+datasets:
+  test:
+    name: RNAtest
+    type: RNAcsvData
+    txt_path: sample_data/csv/mfe-fp_rna.csv  # Please update this path to your test data
+    rna_mode: !!int 126
+    augment_ratio: 1
+    max_rna_len: 1024
+
+# network structures
+network_g:
+  type: TransXL
+  rna_mode: 126
+  rna_max_length: 1024
+  fea_size: 128
+  embed_dim: 64
+  depths: 16
+  num_heads: 4
+  window_size: 8
+  res_norm: True
+
+# path
+path:
+  # pretrain_network_g: pretrained_weights/net_g_latest.pth  # Please update this path
+  pretrain_network_g: /home/data/malan_data/rna_legacy_experiments/RNA7-human-newMFE/models/0_net_g_80000.pth  # Please update this path
+  strict_load_g: True
+  resume_state: ~
+
+val:
+  save_img: true
+  suffix: opt
+  use_pbar: True
+
+  metrics:
+    L1: # metric name, can be arbitrary
+      type: calculate_difference
+      better: higher
+    LER:
+      type: calculate_lengtherror
+      better: lower
+    CER:
+      type: calculate_codonerror
+      better: lower
+    CEP:
+      type: calculate_codonerrorrate
+      better: lower
