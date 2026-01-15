@@ -1,6 +1,6 @@
-# RNA Loss - Test Repository
+# RNA-Protein Loss 
 
-This is a test-only repository for RNA sequence optimization. It contains the necessary code and structure to run inference/testing with pre-trained models.
+This is a open source repository for RNA-Protein Loss, which aims for deep learning based RNA sequence optimization. It is still under development, thus, it may not contain all code.
 
 ## Structure
 
